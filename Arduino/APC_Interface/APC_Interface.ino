@@ -19,7 +19,8 @@ bool mains_down;
 bool low_battery;
 bool mains_up;
 bool powering_off;
-bool computer_connected = false;
+
+bool ups_on = true;
 
 #define SERIAL_BUFFER_LENGTH 20
 
@@ -78,6 +79,14 @@ void set_power_off(bool value) {
     }
 }
 
+void resume_ac_power() {
+    if (mains_up && !ups_on) {
+        digitalWrite(POWER_STATE, HIGH);
+        powering_off = false;
+        ups_on = true;
+    }
+}
+
 void check_for_commands() {
     bool check_command = false;
     if (Serial.available() > 0) {
@@ -99,6 +108,8 @@ void check_for_commands() {
             set_power_off(true);;
         } else if (strcasecmp(serialData, "noshut") == 0) {
             set_power_off(false);
+        } else if (strcasecmp(serialData, "acresume") == 0) {
+            resume_ac_power();
         } else {
             Serial.write("Unrecognized command: '");
             Serial.write(serialData);
@@ -107,12 +118,6 @@ void check_for_commands() {
 
         serialDataIndex = 0;
         serialData[serialDataIndex] = '\0';
-    }
-}
-
-void check_for_computer() {
-    if (Serial) {
-
     }
 }
 
@@ -129,6 +134,7 @@ void setup() {
     pinMode(LOW_BATTERY, INPUT);
 
     digitalWrite(POWER_STATE, HIGH);
+    ups_on = true;
     check_digital_inputs();
     Serial.begin(9600);
     Serial.write("Device Starting\n");
@@ -139,7 +145,6 @@ void setup() {
 void loop() {
     if (check_digital_inputs()) write_status();
     check_for_commands();
-    check_for_computer();
     if (powering_off) {
         if (mains_up) {
             set_power_off(false);
@@ -151,6 +156,7 @@ void loop() {
             Serial.write("Powering Off.\n");
             digitalWrite(POWER_STATE, LOW);
             powering_off = false;
+            ups_on = false;
         }
     }
 }
