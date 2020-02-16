@@ -12,8 +12,14 @@
 #define POWER_STATE 12
 
 #define POWER_OFF_TIME 5 * 1000
+#define POWER_UP_DELAY 30 * 1000
+#define STATUS_CHANGE_UPDATE_WAIT 500
+#define STATUS_UPDATE_TIME_MAX 30 * 1000
 
 unsigned long power_off_start_time;
+unsigned long power_on_wait_start_time;
+unsigned long last_status_update_time;
+
 bool battery_power;
 bool mains_down;
 bool low_battery;
@@ -21,6 +27,8 @@ bool mains_up;
 bool powering_off;
 
 bool ups_on = true;
+
+bool pending_status_update = false;
 
 #define SERIAL_BUFFER_LENGTH 20
 
@@ -34,7 +42,8 @@ void write_bool(bool value) {
         Serial.write("No");
 }
 
-void write_status() {
+void write_status(unsigned long currentTime) {
+    last_status_update_time = currentTime;
     Serial.write("BATT:");
     write_bool(battery_power);
     Serial.write(",BATTLOW:");
@@ -81,6 +90,7 @@ void set_power_off(bool value) {
 
 void resume_ac_power() {
     if (mains_up && !ups_on) {
+        Serial.write("POWERING_UP\n");
         digitalWrite(POWER_STATE, HIGH);
         powering_off = false;
         ups_on = true;
@@ -108,8 +118,6 @@ void check_for_commands() {
             set_power_off(true);;
         } else if (strcasecmp(serialData, "noshut") == 0) {
             set_power_off(false);
-        } else if (strcasecmp(serialData, "acresume") == 0) {
-            resume_ac_power();
         } else {
             Serial.write("Unrecognized command: '");
             Serial.write(serialData);
@@ -137,13 +145,31 @@ void setup() {
     ups_on = true;
     check_digital_inputs();
     Serial.begin(9600);
-    Serial.write("Device Starting\n");
-    write_status();
+    write_status(millis());
 }
 
 // the loop function runs over and over again forever
 void loop() {
-    if (check_digital_inputs()) write_status();
+    unsigned long loopTime = millis();
+    bool last_status_updated_exceeded = loopTime - last_status_update_time > STATUS_UPDATE_TIME_MAX;
+    if (check_digital_inputs()) {
+        pending_status_update = true;
+        last_status_update_time = loopTime;
+    } else if (last_status_updated_exceeded) {
+        write_status(loopTime);
+        pending_status_update = false;
+    }
+
+    if (pending_status_update) {
+        if (loopTime - last_status_update_time > STATUS_CHANGE_UPDATE_WAIT) {
+            pending_status_update = false;
+            write_status(loopTime);
+            if (!ups_on && mains_up) {
+                power_on_wait_start_time = loopTime;
+            }
+        }
+    }
+
     check_for_commands();
     if (powering_off) {
         if (mains_up) {
@@ -151,12 +177,16 @@ void loop() {
             return;
         }
 
-        unsigned long timer = millis() - power_off_start_time;
-        if (millis() - power_off_start_time > POWER_OFF_TIME) {
-            Serial.write("Powering Off.\n");
+        if (loopTime - power_off_start_time > POWER_OFF_TIME) {
             digitalWrite(POWER_STATE, LOW);
             powering_off = false;
             ups_on = false;
+        }
+    }
+
+    if (!ups_on && mains_up) {
+        if (loopTime - power_on_wait_start_time > POWER_UP_DELAY) {
+            resume_ac_power();
         }
     }
 }
