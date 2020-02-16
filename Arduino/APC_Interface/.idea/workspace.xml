@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="APC_Interface" targetName="upload" />
+      <config projectName="APC_Interface" targetName="nano_CORE" />
+      <config projectName="APC_Interface" targetName="APC_Interface" />
+      <config projectName="APC_Interface" targetName="APC_Interface-upload" />
+      <config projectName="APC_Interface" targetName="APC_Interface-size" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f7d7908f-ccaf-4fb4-9505-fb2c64465a74" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ProjectId" id="1Wuet2bsIGZs42yCZAik6tDZjb7" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RunManager" selected="CMake Application.APC_Interface-upload">
+    <configuration name="APC_Interface-size" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="APC_Interface-size" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="APC_Interface-upload" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="APC_Interface-upload" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="APC_Interface" RUN_TARGET_NAME="APC_Interface">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="APC_Interface" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="APC_Interface" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="APC_Interface" RUN_TARGET_NAME="APC_Interface">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="nano_CORE" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="nano_CORE" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="upload" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="upload" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.APC_Interface" />
+      <item itemvalue="CMake Application.APC_Interface-size" />
+      <item itemvalue="CMake Application.APC_Interface-upload" />
+      <item itemvalue="CMake Application.nano_CORE" />
+      <item itemvalue="CMake Application.upload" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f7d7908f-ccaf-4fb4-9505-fb2c64465a74" name="Default Changelist" comment="" />
+      <created>1580004117666</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1580004117666</updated>
+      <workItem from="1580004118807" duration="1414000" />
+      <workItem from="1580006074978" duration="135000" />
+      <workItem from="1581778761699" duration="2773000" />
+      <workItem from="1581819078228" duration="3703000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1001" y="443" key="#APC_Interface-upload" timestamp="1580005073282">
+      <screen x="0" y="0" width="2560" height="1440" />
+    </state>
+    <state x="1001" y="443" key="#APC_Interface-upload/0.0.2560.1440@0.0.2560.1440" timestamp="1580005073282" />
+    <state x="304" y="198" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1580006108766">
+      <screen x="0" y="22" width="1680" height="1028" />
+    </state>
+    <state x="304" y="198" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.22.1680.1028@0.22.1680.1028" timestamp="1580006108766" />
+    <state width="1358" height="267" key="GridCell.Tab.0.bottom" timestamp="1580006209846">
+      <screen x="0" y="22" width="1680" height="1028" />
+    </state>
+    <state width="1358" height="267" key="GridCell.Tab.0.bottom/0.22.1680.1028@0.22.1680.1028" timestamp="1580006209846" />
+    <state width="1358" height="267" key="GridCell.Tab.0.center" timestamp="1580006209845">
+      <screen x="0" y="22" width="1680" height="1028" />
+    </state>
+    <state width="1358" height="267" key="GridCell.Tab.0.center/0.22.1680.1028@0.22.1680.1028" timestamp="1580006209845" />
+    <state width="1358" height="267" key="GridCell.Tab.0.left" timestamp="1580006209845">
+      <screen x="0" y="22" width="1680" height="1028" />
+    </state>
+    <state width="1358" height="267" key="GridCell.Tab.0.left/0.22.1680.1028@0.22.1680.1028" timestamp="1580006209845" />
+    <state width="1358" height="267" key="GridCell.Tab.0.right" timestamp="1580006209845">
+      <screen x="0" y="22" width="1680" height="1028" />
+    </state>
+    <state width="1358" height="267" key="GridCell.Tab.0.right/0.22.1680.1028@0.22.1680.1028" timestamp="1580006209845" />
+    <state x="782" y="364" key="SettingsEditor" timestamp="1580004327555">
+      <screen x="0" y="0" width="2560" height="1440" />
+    </state>
+    <state x="782" y="364" key="SettingsEditor/0.0.2560.1440@0.0.2560.1440" timestamp="1580004327555" />
+    <state x="519" y="368" key="com.intellij.ide.util.TipDialog" timestamp="1581819085333">
+      <screen x="0" y="22" width="1680" height="1028" />
+    </state>
+    <state x="519" y="368" key="com.intellij.ide.util.TipDialog/0.22.1680.1028@0.22.1680.1028" timestamp="1581819085333" />
+    <state x="617" y="408" key="com.vladsch.clionarduinoplugin.settings.ProjectSettingsDialog" timestamp="1581779413072">
+      <screen x="0" y="22" width="1680" height="1028" />
+    </state>
+    <state x="940" y="540" key="com.vladsch.clionarduinoplugin.settings.ProjectSettingsDialog/0.0.2560.1440@0.0.2560.1440" timestamp="1580005471878" />
+    <state x="617" y="408" key="com.vladsch.clionarduinoplugin.settings.ProjectSettingsDialog/0.22.1680.1028@0.22.1680.1028" timestamp="1581779413072" />
+  </component>
+</project>
