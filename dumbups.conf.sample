@@ -1,0 +1,11 @@
+[serial]
+    portname = "/dev/ttyUSBS0" # can also be com port name on windows
+    baudrate = 9600
+    databits = 8
+    stopbits = 1
+
+[ups]
+    shutdown = "immediate"
+    # can be either "immediate" or "lowbattery"
+    # immediate = as soon as power lost
+    # lowbattery = when battery low signal occurs
