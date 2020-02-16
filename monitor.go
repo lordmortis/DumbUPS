@@ -76,10 +76,6 @@ func updateStatus(line string) (newState state, err error) {
 	return newState, nil
 }
 
-func issueShutdown() {
-	fmt.Printf("Shutdown Now!\n")
-}
-
 func (x *MonitorCommand)Execute(args[]string) error {
 	inBuffer := make([]byte, 50)
 	lineBuffer := ""
@@ -115,6 +111,7 @@ func (x *MonitorCommand)Execute(args[]string) error {
 
 		if !nextState.Equal(currentState) {
 			currentState = nextState
+			fmt.Printf("State\n%s", currentState)
 			if (currentState.batteryLow) {
 				issueShutdown()
 			} else if (currentState.mainsDown && configFile.UPS.ShutdownOnNoMains) {
