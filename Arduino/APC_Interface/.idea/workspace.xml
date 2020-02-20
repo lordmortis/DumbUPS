@@ -2,20 +2,38 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="APC_Interface" targetName="upload" />
-      <config projectName="APC_Interface" targetName="nano_CORE" />
+      <config projectName="APC_Interface" targetName="PLATFORMIO_BUILD" />
+      <config projectName="APC_Interface" targetName="DEBUG" />
+      <config projectName="APC_Interface" targetName="PLATFORMIO_PROGRAM" />
+      <config projectName="APC_Interface" targetName="Z_DUMMY_TARGET" />
+      <config projectName="APC_Interface" targetName="PLATFORMIO_REBUILD_PROJECT_INDEX" />
+      <config projectName="APC_Interface" targetName="PLATFORMIO_DEVICE_LIST" />
+      <config projectName="APC_Interface" targetName="PLATFORMIO_MONITOR" />
+      <config projectName="APC_Interface" targetName="PLATFORMIO_CLEAN" />
       <config projectName="APC_Interface" targetName="APC_Interface" />
-      <config projectName="APC_Interface" targetName="APC_Interface-upload" />
-      <config projectName="APC_Interface" targetName="APC_Interface-size" />
+      <config projectName="APC_Interface" targetName="PLATFORMIO_UPLOAD" />
+      <config projectName="APC_Interface" targetName="PLATFORMIO_UPLOADFS" />
+      <config projectName="APC_Interface" targetName="PLATFORMIO_BUILD_VERBOSE" />
+      <config projectName="APC_Interface" targetName="PLATFORMIO_TEST" />
+      <config projectName="APC_Interface" targetName="PLATFORMIO_BUILD_DEBUG" />
+      <config projectName="APC_Interface" targetName="PLATFORMIO" />
+      <config projectName="APC_Interface" targetName="PLATFORMIO_UPDATE_ALL" />
     </generated>
   </component>
-  <component name="CMakeSettings">
+  <component name="CMakeSettings" AUTO_RELOAD="true">
     <configurations>
-      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+      <configuration PROFILE_NAME="leostick" CONFIG_NAME="leostick" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7d7908f-ccaf-4fb4-9505-fb2c64465a74" name="Default Changelist" comment="" />
+    <list default="true" id="ec922180-b3d3-40f1-af0b-2568113a9075" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,57 +42,146 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
-  <component name="ProjectId" id="1Wuet2bsIGZs42yCZAik6tDZjb7" />
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
-    <option name="showLibraryContents" value="true" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:leostick" />
+  <component name="FavoritesManager">
+    <favorites_list name="APC_Interface" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="252" />
+    <option name="y" value="21" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>C/C++</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
   </component>
   <component name="PropertiesComponent">
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="FullScreen" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/platformio.ini" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="recentsLimit" value="5" />
+    <property name="restartRequiresConfirmation" value="true" />
+    <property name="settings.editor.selected.configurable" value="CPPToolchains" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
-  <component name="RunManager" selected="CMake Application.APC_Interface-upload">
-    <configuration name="APC_Interface-size" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="APC_Interface-size" CONFIG_NAME="Debug">
+  <component name="RunManager" selected="CMake Application.PLATFORMIO_UPDATE">
+    <configuration name="PLATFORMIO_BUILD" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="PLATFORMIO_BUILD" CONFIG_NAME="leostick">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="APC_Interface-upload" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="APC_Interface-upload" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="APC_Interface" RUN_TARGET_NAME="APC_Interface">
+    <configuration name="PLATFORMIO_BUILD_DEBUG" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="PLATFORMIO_BUILD_DEBUG" CONFIG_NAME="leostick">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="APC_Interface" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="APC_Interface" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="APC_Interface" RUN_TARGET_NAME="APC_Interface">
+    <configuration name="PLATFORMIO_BUILD_VERBOSE" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="PLATFORMIO_BUILD_VERBOSE" CONFIG_NAME="leostick">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="nano_CORE" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="nano_CORE" CONFIG_NAME="Debug">
+    <configuration name="PLATFORMIO_CLEAN" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="PLATFORMIO_CLEAN" CONFIG_NAME="leostick">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="upload" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="upload" CONFIG_NAME="Debug">
+    <configuration name="PLATFORMIO_DEVICE_LIST" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="PLATFORMIO_DEVICE_LIST" CONFIG_NAME="leostick">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
+    </configuration>
+    <configuration name="PLATFORMIO_MONITOR" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="PLATFORMIO_MONITOR" CONFIG_NAME="leostick">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PLATFORMIO_PROGRAM" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="PLATFORMIO_PROGRAM" CONFIG_NAME="leostick">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PLATFORMIO_REBUILD_PROJECT_INDEX" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="PLATFORMIO_REBUILD_PROJECT_INDEX" CONFIG_NAME="leostick">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PLATFORMIO_TEST" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="PLATFORMIO_TEST" CONFIG_NAME="leostick">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PLATFORMIO_UPDATE" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="PLATFORMIO_UPDATE_ALL" CONFIG_NAME="leostick">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PLATFORMIO_UPLOAD" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="PLATFORMIO_UPLOAD" CONFIG_NAME="leostick">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PLATFORMIO_UPLOADFS" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="PLATFORMIO_UPLOADFS" CONFIG_NAME="leostick">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Z_DUMMY_TARGET" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="Z_DUMMY_TARGET" CONFIG_NAME="leostick" RUN_TARGET_PROJECT_NAME="APC_Interface" RUN_TARGET_NAME="Z_DUMMY_TARGET">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="APC_Interface" TARGET_NAME="APC_Interface" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <pass-parent-envs>true</pass-parent-envs>
+      <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="CMake Application.APC_Interface" />
-      <item itemvalue="CMake Application.APC_Interface-size" />
-      <item itemvalue="CMake Application.APC_Interface-upload" />
-      <item itemvalue="CMake Application.nano_CORE" />
-      <item itemvalue="CMake Application.upload" />
+      <item itemvalue="CMake Application.PLATFORMIO_UPDATE" />
+      <item itemvalue="CMake Application.PLATFORMIO_BUILD" />
+      <item itemvalue="CMake Application.PLATFORMIO_BUILD_DEBUG" />
+      <item itemvalue="CMake Application.PLATFORMIO_BUILD_VERBOSE" />
+      <item itemvalue="CMake Application.PLATFORMIO_CLEAN" />
+      <item itemvalue="CMake Application.PLATFORMIO_DEVICE_LIST" />
+      <item itemvalue="CMake Application.PLATFORMIO_MONITOR" />
+      <item itemvalue="CMake Application.PLATFORMIO_PROGRAM" />
+      <item itemvalue="CMake Application.PLATFORMIO_REBUILD_PROJECT_INDEX" />
+      <item itemvalue="CMake Application.PLATFORMIO_TEST" />
+      <item itemvalue="CMake Application.PLATFORMIO_UPLOAD" />
+      <item itemvalue="CMake Application.PLATFORMIO_UPLOADFS" />
+      <item itemvalue="CMake Application.Z_DUMMY_TARGET" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -82,58 +189,35 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f7d7908f-ccaf-4fb4-9505-fb2c64465a74" name="Default Changelist" comment="" />
-      <created>1580004117666</created>
+      <changelist id="ec922180-b3d3-40f1-af0b-2568113a9075" name="Default" comment="" />
+      <created>1435919971910</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1580004117666</updated>
-      <workItem from="1580004118807" duration="1414000" />
-      <workItem from="1580006074978" duration="135000" />
-      <workItem from="1581778761699" duration="2773000" />
-      <workItem from="1581819078228" duration="3703000" />
+      <updated>1435919971910</updated>
     </task>
     <servers />
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
   </component>
-  <component name="WindowStateProjectService">
-    <state x="1001" y="443" key="#APC_Interface-upload" timestamp="1580005073282">
-      <screen x="0" y="0" width="2560" height="1440" />
-    </state>
-    <state x="1001" y="443" key="#APC_Interface-upload/0.0.2560.1440@0.0.2560.1440" timestamp="1580005073282" />
-    <state x="304" y="198" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1580006108766">
-      <screen x="0" y="22" width="1680" height="1028" />
-    </state>
-    <state x="304" y="198" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.22.1680.1028@0.22.1680.1028" timestamp="1580006108766" />
-    <state width="1358" height="267" key="GridCell.Tab.0.bottom" timestamp="1580006209846">
-      <screen x="0" y="22" width="1680" height="1028" />
-    </state>
-    <state width="1358" height="267" key="GridCell.Tab.0.bottom/0.22.1680.1028@0.22.1680.1028" timestamp="1580006209846" />
-    <state width="1358" height="267" key="GridCell.Tab.0.center" timestamp="1580006209845">
-      <screen x="0" y="22" width="1680" height="1028" />
-    </state>
-    <state width="1358" height="267" key="GridCell.Tab.0.center/0.22.1680.1028@0.22.1680.1028" timestamp="1580006209845" />
-    <state width="1358" height="267" key="GridCell.Tab.0.left" timestamp="1580006209845">
-      <screen x="0" y="22" width="1680" height="1028" />
-    </state>
-    <state width="1358" height="267" key="GridCell.Tab.0.left/0.22.1680.1028@0.22.1680.1028" timestamp="1580006209845" />
-    <state width="1358" height="267" key="GridCell.Tab.0.right" timestamp="1580006209845">
-      <screen x="0" y="22" width="1680" height="1028" />
-    </state>
-    <state width="1358" height="267" key="GridCell.Tab.0.right/0.22.1680.1028@0.22.1680.1028" timestamp="1580006209845" />
-    <state x="782" y="364" key="SettingsEditor" timestamp="1580004327555">
-      <screen x="0" y="0" width="2560" height="1440" />
-    </state>
-    <state x="782" y="364" key="SettingsEditor/0.0.2560.1440@0.0.2560.1440" timestamp="1580004327555" />
-    <state x="519" y="368" key="com.intellij.ide.util.TipDialog" timestamp="1581819085333">
-      <screen x="0" y="22" width="1680" height="1028" />
-    </state>
-    <state x="519" y="368" key="com.intellij.ide.util.TipDialog/0.22.1680.1028@0.22.1680.1028" timestamp="1581819085333" />
-    <state x="617" y="408" key="com.vladsch.clionarduinoplugin.settings.ProjectSettingsDialog" timestamp="1581779413072">
-      <screen x="0" y="22" width="1680" height="1028" />
-    </state>
-    <state x="940" y="540" key="com.vladsch.clionarduinoplugin.settings.ProjectSettingsDialog/0.0.2560.1440@0.0.2560.1440" timestamp="1580005471878" />
-    <state x="617" y="408" key="com.vladsch.clionarduinoplugin.settings.ProjectSettingsDialog/0.22.1680.1028@0.22.1680.1028" timestamp="1581779413072" />
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

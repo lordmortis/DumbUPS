@@ -107,7 +107,7 @@ void check_for_commands() {
             serialData[serialDataIndex] = input;
             serialDataIndex++;
             serialData[serialDataIndex] = '\0';
-            if (serialDataIndex >= SERIAL_BUFFER_LENGTH) {
+            if (serialDataIndex > SERIAL_BUFFER_LENGTH - 1) {
                 check_command = true;
             }
         }
