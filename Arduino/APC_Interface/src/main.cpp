@@ -4,15 +4,15 @@
   APC Dumb UPS Interface
 */
 
-#define BATTERY_POWER 3
-#define MAINS_DOWN 4
-#define LOW_BATTERY 5
-#define MAINS_UP 6
+#define BATTERY_POWER 8
+#define MAINS_DOWN 10
+#define LOW_BATTERY 9
+#define MAINS_UP 11
 
 #define POWER_STATE 12
 
 #define POWER_OFF_TIME 5 * 1000
-#define POWER_UP_DELAY 30 * 1000
+#define POWER_UP_DELAY 10 * 1000
 #define STATUS_CHANGE_UPDATE_WAIT 500
 #define STATUS_UPDATE_TIME_MAX 30 * 1000
 
@@ -25,6 +25,7 @@ bool mains_down;
 bool low_battery;
 bool mains_up;
 bool powering_off;
+bool powering_on;
 
 bool ups_on = true;
 
@@ -94,6 +95,8 @@ void resume_ac_power() {
         digitalWrite(POWER_STATE, HIGH);
         powering_off = false;
         ups_on = true;
+        delay(500);
+        digitalWrite(POWER_STATE, LOW);
     }
 }
 
@@ -141,7 +144,7 @@ void setup() {
     pinMode(LOW_BATTERY, INPUT);
     pinMode(LOW_BATTERY, INPUT);
 
-    digitalWrite(POWER_STATE, HIGH);
+    digitalWrite(POWER_STATE, LOW);
     ups_on = true;
     check_digital_inputs();
     Serial.begin(9600);
@@ -164,9 +167,6 @@ void loop() {
         if (loopTime - last_status_update_time > STATUS_CHANGE_UPDATE_WAIT) {
             pending_status_update = false;
             write_status(loopTime);
-            if (!ups_on && mains_up) {
-                power_on_wait_start_time = loopTime;
-            }
         }
     }
 
@@ -178,15 +178,22 @@ void loop() {
         }
 
         if (loopTime - power_off_start_time > POWER_OFF_TIME) {
-            digitalWrite(POWER_STATE, LOW);
+            digitalWrite(POWER_STATE, HIGH);
             powering_off = false;
             ups_on = false;
+            delay(500);
+            digitalWrite(POWER_STATE, LOW);
         }
     }
 
     if (!ups_on && mains_up) {
-        if (loopTime - power_on_wait_start_time > POWER_UP_DELAY) {
-            resume_ac_power();
+        if (!powering_on) {
+            powering_on = true;
+            power_on_wait_start_time = loopTime;
+        } else if (powering_on) {
+            if (loopTime - power_on_wait_start_time > POWER_UP_DELAY) {
+                resume_ac_power();
+            }
         }
     }
 }
