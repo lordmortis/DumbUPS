@@ -17,3 +17,4 @@ Pinouts
 |Mains Up|11| To Arduino |6 
 |Power State|12| To APC | 7
 
+(thanks to APCUPSD for this info, made life a lot easier!)
