@@ -7,8 +7,8 @@ import (
 )
 
 func issueShutdown() {
-	fmt.Printf("Shutdown")
-	if err := exec.Command("shutdown now").Run(); err != nil {
+	fmt.Printf("Shutdown\n")
+	if err := exec.Command("shutdown", "now").Run(); err != nil {
 		fmt.Println("Failed to initiate shutdown:", err)
 	}
 }
