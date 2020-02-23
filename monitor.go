@@ -3,7 +3,9 @@ package main
 import (
 	"errors"
 	"fmt"
+	"io"
 	"strings"
+	"time"
 )
 
 type state struct {
@@ -45,7 +47,7 @@ func init() {
 }
 
 func updateStatus(line string) (newState state, err error) {
-	sections := strings.Split(line, ",")
+	sections := strings.Split(line[7:len(line) - 1], ",")
 	if len(sections) != 4 {
 		return newState, errors.New("unable to parse state, not long enough")
 	}
@@ -55,8 +57,8 @@ func updateStatus(line string) (newState state, err error) {
 		if len(parts) != 2 {
 			return newState, errors.New("unable to parse state, invalid part")
 		}
-		key := strings.ToLower(parts[0])
-		value := strings.ToLower(parts[1]) == "yes"
+		key := parts[0]
+		value := parts[1] == "yes"
 		switch key {
 		case "batt":
 				newState.batteryUsed = value
@@ -81,10 +83,20 @@ func (x *MonitorCommand)Execute(args[]string) error {
 	lineBuffer := ""
 	currentState := state{}
 	nextState := state{}
+	nextWatchdog := time.Now()
 
 	for {
+		if nextWatchdog.Before(time.Now()) {
+			_, err := serialIO.Write([]byte("ping\n"))
+			if err != nil {
+				fmt.Printf("Unable to send watchdog ping: %s\n", err.Error())
+			} else {
+				nextWatchdog = time.Now().Add(10 * time.Second)
+			}
+		}
+
 		num, err := serialIO.Read(inBuffer)
-		if err != nil {
+		if err != nil && err != io.EOF {
 			return err
 		}
 
@@ -96,9 +108,12 @@ func (x *MonitorCommand)Execute(args[]string) error {
 		for index := 0; index < num; index++ {
 			if inBuffer[index] == '\n' {
 				lineBuffer += string(inBuffer[startIndex:index])
-				nextState, err = updateStatus(lineBuffer)
-				if err != nil {
-					return err
+				lineBuffer = strings.ToLower(lineBuffer);
+				if strings.HasPrefix(lineBuffer, "status") {
+					nextState, err = updateStatus(lineBuffer)
+					if err != nil {
+						return err
+					}
 				}
 				lineBuffer = ""
 				startIndex = index + 1

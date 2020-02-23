@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type ShutdownCommand struct {
 }
 
@@ -17,6 +19,7 @@ func init() {
 }
 
 func (x *ShutdownCommand)Execute(args[]string) error {
+	fmt.Printf("Triggering UPS Shutdown\n")
 	_, err := serialIO.Write([]byte("shut\n"))
 	if err != nil {
 		return err
