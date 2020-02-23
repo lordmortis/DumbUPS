@@ -12,9 +12,9 @@ Pinouts
 |-------|-------------|-----------|--------------|
 |Ground | Gnd | n/a | 4 |
 |Battery Power| 8 | To Arduino | 2 
-|Low Battery|9| To Arduino | 5
-|Mains Down|10| To Arduino | 3
-|Mains Up|11| To Arduino |6 
+|Low Battery|9| To Arduino | 5 (Open Collector)
+|Mains Down|10| To Arduino | 3 (Open Collector)
+|Mains Up|11| To Arduino |6  (Open Collector)
 |Power State|12| To APC | 7
 
-(thanks to APCUPSD for this info, made life a lot easier!)
+(thanks to [APCUPSD](http://apcupsd.org/manual/manual.html#voltage-signalling) for this info, made life a lot easier!)
