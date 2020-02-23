@@ -44,3 +44,7 @@ UPS Interfaces
  * [APC](Arduino/APC_Interface/Readme.md)
 
    This implementation example uses an arduino (specifically a Leostick) but should be simple enough to serve as an example for other interfaces
+
+Linux Service
+====
+There is an example systemd file for running this as a linux service [here](systemd/dumbups.service)
