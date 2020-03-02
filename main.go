@@ -37,7 +37,8 @@ func main() {
 			BaudRate: configFile.Serial.BaudRate,
 			DataBits: configFile.Serial.DataBits,
 			StopBits: configFile.Serial.StopBits,
-			MinimumReadSize: 4,
+			InterCharacterTimeout: 100,
+			MinimumReadSize: 0,
 		}
 
 		serialIO, err = serial.Open(options)

@@ -1,0 +1,19 @@
+[Unit]
+Description=Dumb UPS Service
+ConditionPathExists=/etc/dumbups.conf
+StartLimitInterval=200
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+Group=root
+
+Restart=on-failure
+RestartSec=30
+
+Environment="PATH=/sbin"
+ExecStart=/usr/local/sbin/DumbUPS monitor
+
+[Install]
+WantedBy=multi-user.target

@@ -15,10 +15,12 @@
 #define POWER_UP_DELAY 30 * 1000
 #define STATUS_CHANGE_UPDATE_WAIT 500
 #define STATUS_UPDATE_TIME_MAX 30 * 1000
+#define MAX_WATCHDOG_TIME 30 * 1000
 
 unsigned long power_off_start_time;
 unsigned long power_on_wait_start_time;
 unsigned long last_status_update_time;
+unsigned long last_watchdog_message_time;
 
 bool battery_power;
 bool mains_down;
@@ -45,6 +47,7 @@ void write_bool(bool value) {
 
 void write_status(unsigned long currentTime) {
     last_status_update_time = currentTime;
+    Serial.write("STATUS-");
     Serial.write("BATT:");
     write_bool(battery_power);
     Serial.write(",BATTLOW:");
@@ -100,7 +103,7 @@ void resume_ac_power() {
     }
 }
 
-void check_for_commands() {
+void check_for_commands(unsigned long loopTime) {
     bool check_command = false;
     if (Serial.available() > 0) {
         char input = Serial.read();
@@ -118,9 +121,14 @@ void check_for_commands() {
 
     if (check_command) {
         if (strcasecmp(serialData, "shut") == 0) {
-            set_power_off(true);;
+            last_watchdog_message_time = loopTime;
+            set_power_off(true);
         } else if (strcasecmp(serialData, "noshut") == 0) {
+            last_watchdog_message_time = loopTime;
             set_power_off(false);
+        } else if (strcasecmp(serialData, "ping") == 0) {
+            Serial.write("PONG\n");
+            last_watchdog_message_time = loopTime;
         } else {
             Serial.write("Unrecognized command: '");
             Serial.write(serialData);
@@ -149,6 +157,7 @@ void setup() {
     check_digital_inputs();
     Serial.begin(9600);
     write_status(millis());
+    last_watchdog_message_time = millis();
 }
 
 // the loop function runs over and over again forever
@@ -170,7 +179,12 @@ void loop() {
         }
     }
 
-    check_for_commands();
+    check_for_commands(loopTime);
+    if (!powering_off && loopTime - last_watchdog_message_time > MAX_WATCHDOG_TIME) {
+        Serial.write("Watchdog Expired, shutting down\n");
+        powering_off = true;
+    }
+
     if (powering_off) {
         if (mains_up) {
             set_power_off(false);
@@ -190,7 +204,7 @@ void loop() {
         if (!powering_on) {
             powering_on = true;
             power_on_wait_start_time = loopTime;
-        } else if (powering_on) {
+        } else {
             if (loopTime - power_on_wait_start_time > POWER_UP_DELAY) {
                 resume_ac_power();
             }
