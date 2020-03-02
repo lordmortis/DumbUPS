@@ -19,7 +19,7 @@ U 1 1 5E510DF4
 P 1500 2600
 F 0 "R2" H 1430 2554 50  0000 R CNN
 F 1 "4.7K" H 1430 2645 50  0000 R CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 1430 2600 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 1430 2600 50  0001 C CNN
 F 3 "~" H 1500 2600 50  0001 C CNN
 	1    1500 2600
 	-1   0    0    1   
@@ -27,23 +27,23 @@ $EndComp
 $Comp
 L Device:R R5
 U 1 1 5E51218F
-P 2500 2600
-F 0 "R5" H 2430 2554 50  0000 R CNN
-F 1 "4.7K" H 2430 2645 50  0000 R CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2430 2600 50  0001 C CNN
-F 3 "~" H 2500 2600 50  0001 C CNN
-	1    2500 2600
+P 2800 2600
+F 0 "R5" H 2730 2554 50  0000 R CNN
+F 1 "4.7K" H 2730 2645 50  0000 R CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 2730 2600 50  0001 C CNN
+F 3 "~" H 2800 2600 50  0001 C CNN
+	1    2800 2600
 	-1   0    0    1   
 $EndComp
 $Comp
 L Device:R R4
 U 1 1 5E51263D
-P 2200 2600
-F 0 "R4" H 2270 2646 50  0000 L CNN
-F 1 "4.7K" H 2270 2555 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 2130 2600 50  0001 C CNN
-F 3 "~" H 2200 2600 50  0001 C CNN
-	1    2200 2600
+P 2150 2600
+F 0 "R4" H 2220 2646 50  0000 L CNN
+F 1 "4.7K" H 2220 2555 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 2080 2600 50  0001 C CNN
+F 3 "~" H 2150 2600 50  0001 C CNN
+	1    2150 2600
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -52,7 +52,7 @@ U 1 1 5E51298B
 P 1200 2600
 F 0 "R1" H 1130 2554 50  0000 R CNN
 F 1 "4.7K" H 1130 2645 50  0000 R CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 1130 2600 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 1130 2600 50  0001 C CNN
 F 3 "~" H 1200 2600 50  0001 C CNN
 	1    1200 2600
 	-1   0    0    1   
@@ -74,7 +74,7 @@ U 1 1 5E511980
 P 1850 2600
 F 0 "R3" H 1780 2554 50  0000 R CNN
 F 1 "4.7K" H 1780 2645 50  0000 R CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 1780 2600 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 1780 2600 50  0001 C CNN
 F 3 "~" H 1850 2600 50  0001 C CNN
 	1    1850 2600
 	-1   0    0    1   
@@ -90,12 +90,7 @@ Wire Wire Line
 Wire Wire Line
 	1500 2100 1500 2250
 Wire Wire Line
-	1850 2300 1850 2450
-Wire Wire Line
 	1050 1550 1850 1550
-Wire Wire Line
-	1850 1550 1850 2300
-Connection ~ 1850 2300
 $Comp
 L power:GND #PWR0101
 U 1 1 5E54EA0D
@@ -111,31 +106,22 @@ Connection ~ 1100 3250
 $Comp
 L Transistor_BJT:PN2222A Q1
 U 1 1 5E54FE29
-P 2400 3000
-F 0 "Q1" H 2591 2954 50  0000 L CNN
-F 1 "PN100" H 2591 3045 50  0000 L CNN
-F 2 "Package_TO_SOT_THT:TO-92Flat" H 2500 4200 60  0001 C CNN
-F 3 "https://www.futurlec.com/Transistors/PN100.shtml" H 2400 3000 60  0001 C CNN
-	1    2400 3000
+P 2350 3000
+F 0 "Q1" H 2541 2954 50  0000 L CNN
+F 1 "PN100" H 2541 3045 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92Flat" H 2450 4200 60  0001 C CNN
+F 3 "https://www.futurlec.com/Transistors/PN100.shtml" H 2350 3000 60  0001 C CNN
+	1    2350 3000
 	1    0    0    1   
 $EndComp
 Wire Wire Line
-	2200 1650 2200 2450
+	2150 1650 2150 2450
 Wire Wire Line
-	1050 1650 2200 1650
+	1050 1650 2150 1650
 Wire Wire Line
-	2200 2750 2200 3000
+	2150 2750 2150 3000
 Wire Wire Line
 	5250 3200 5250 2100
-Wire Wire Line
-	1200 1850 1200 2200
-Connection ~ 1200 2200
-Wire Wire Line
-	1200 2200 1200 2450
-Wire Wire Line
-	2500 2800 2500 2750
-Wire Wire Line
-	2500 2000 2500 2450
 Wire Wire Line
 	1050 2250 1500 2250
 Connection ~ 1500 2250
@@ -145,10 +131,10 @@ NoConn ~ 1050 1450
 NoConn ~ 1050 1950
 NoConn ~ 1050 2150
 Wire Wire Line
-	2500 3200 1850 3200
+	2450 3200 1850 3200
 Wire Wire Line
 	1200 3200 1200 2750
-Connection ~ 2500 3200
+Connection ~ 2450 3200
 Wire Wire Line
 	1500 2750 1500 3200
 Connection ~ 1500 3200
@@ -160,7 +146,7 @@ Connection ~ 1850 3200
 Wire Wire Line
 	1850 3200 1500 3200
 Wire Wire Line
-	2500 3200 5250 3200
+	2450 3200 5250 3200
 Wire Wire Line
 	3200 1750 1050 1750
 Wire Wire Line
@@ -189,15 +175,7 @@ NoConn ~ 5150 1700
 Wire Wire Line
 	3550 2400 3500 2400
 NoConn ~ 5150 1800
-Wire Wire Line
-	3550 2300 1850 2300
 NoConn ~ 5150 1900
-Wire Wire Line
-	3550 2200 1200 2200
-Wire Wire Line
-	3550 2100 1500 2100
-Wire Wire Line
-	3550 2000 2500 2000
 NoConn ~ 3550 1900
 NoConn ~ 3550 1800
 NoConn ~ 3550 1700
@@ -228,8 +206,6 @@ F 3 "https://www.futurlec.com/Transistors/PN100.shtml" H 3300 3050 60  0001 C CN
 	1    3300 3050
 	-1   0    0    -1  
 $EndComp
-Wire Wire Line
-	1100 3250 3200 3250
 Connection ~ 3200 3250
 Wire Wire Line
 	3200 3250 5300 3250
@@ -239,7 +215,7 @@ U 1 1 5E57A04E
 P 3200 2600
 F 0 "R6" H 3130 2554 50  0000 R CNN
 F 1 "4.7K" H 3130 2645 50  0000 R CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 3130 2600 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 3130 2600 50  0001 C CNN
 F 3 "~" H 3200 2600 50  0001 C CNN
 	1    3200 2600
 	-1   0    0    1   
@@ -248,4 +224,36 @@ Wire Wire Line
 	3200 2850 3200 2750
 Wire Wire Line
 	3200 2450 3200 1750
+Wire Wire Line
+	1100 3250 2800 3250
+Connection ~ 1200 2200
+Wire Wire Line
+	1200 2200 1200 2450
+Wire Wire Line
+	1200 1850 1200 2200
+Connection ~ 1850 2300
+Wire Wire Line
+	1850 1550 1850 2300
+Wire Wire Line
+	1850 2300 1850 2450
+Wire Wire Line
+	3550 2100 1500 2100
+Wire Wire Line
+	3550 2200 1200 2200
+Wire Wire Line
+	3550 2300 1850 2300
+Wire Wire Line
+	2450 2000 2800 2000
+Wire Wire Line
+	2450 2000 2450 2800
+Wire Wire Line
+	2800 2450 2800 2000
+Connection ~ 2800 2000
+Wire Wire Line
+	2800 2000 3550 2000
+Wire Wire Line
+	2800 2750 2800 3250
+Connection ~ 2800 3250
+Wire Wire Line
+	2800 3250 3200 3250
 $EndSCHEMATC
