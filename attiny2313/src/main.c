@@ -5,44 +5,98 @@
 
 #include "serialIO.h"
 
+#define POWER_OFF_TIME_S = 30
+#define POWER_UP_DELAY_S = 30
+#define STATUS_CHANGE_UPDATE_WAIT_IN_MS 500
+#define STATUS_UPDATE_TIME_MAX_IN_S 30
+#define STATUS_UPDATE_INTERVAL_IN_S 5
+
 char const status_text[] PROGMEM = "STATUS-";
 char const battery_text[] PROGMEM = "BATT:";
-char const battery_low_text[] PROGMEM = "BATTLOW";
-char const mains_down_text[] PROGMEM = "MAINSDWN:";
-char const mains_up_text[] PROGMEM = "MAINSUP:";
-char const on_text[] PROGMEM = "LED on";
-char const off_text[] PROGMEM = "No LED";
+char const battery_low_text[] PROGMEM = ",BATTLOW:";
+char const mains_down_text[] PROGMEM = ",MAINSDWN:";
+char const mains_up_text[] PROGMEM = ",MAINSUP:";
+char const yes_text[] PROGMEM = "Yes";
+char const no_text[] PROGMEM = "No";
 char const new_line[] PROGMEM = "\r\n";
+char const power_off_command_text[] PROGMEM = "shut";
+char const no_power_off_command_text[] PROGMEM = "noshut";
+char const ping_command_text[] PROGMEM = "ping";
+char const unknown_command_text[] PROGMEM = "unknown command";
 
-uint8_t led_count;
-uint8_t led_on;
+uint16_t ms_count;
+uint8_t status_update_s_count;
 
 char outputBuffer[60];
 char inputBuffer[10];
 
+bool write_status() {
+    if (Serial_WritePending()) return false;
+    uint8_t bufIndex = 0;
+    strcpy_P(outputBuffer, status_text);
+    bufIndex = strlen(outputBuffer);
+    strcpy_P(outputBuffer + bufIndex, battery_text);
+    bufIndex = strlen(outputBuffer);
+    strcpy_P(outputBuffer + bufIndex, yes_text);
+    bufIndex = strlen(outputBuffer);
+    strcpy_P(outputBuffer + bufIndex, battery_low_text);
+    bufIndex = strlen(outputBuffer);
+    strcpy_P(outputBuffer + bufIndex, yes_text);
+    bufIndex = strlen(outputBuffer);
+    strcpy_P(outputBuffer + bufIndex, mains_down_text);
+    bufIndex = strlen(outputBuffer);
+    strcpy_P(outputBuffer + bufIndex, yes_text);
+    bufIndex = strlen(outputBuffer);
+    strcpy_P(outputBuffer + bufIndex, mains_up_text);
+    bufIndex = strlen(outputBuffer);
+    strcpy_P(outputBuffer + bufIndex, yes_text);
+    bufIndex = strlen(outputBuffer);
+    strcpy_P(outputBuffer + bufIndex, new_line);
+    Serial_WriteString(outputBuffer, strlen(outputBuffer));
+    return true;
+}
+
+void check_command() {
+    uint8_t length = strlen(inputBuffer);
+    if (length == 0) return; // Not enough data in buffer
+    if (inputBuffer[length - 1] != '\n' && inputBuffer[length - 1] != '\r') return; //not a proper command;
+    Serial_ResetReadBuffer();
+    for(int i = 0; i < length; i++) {
+        if (inputBuffer[i] != '\n' && inputBuffer[i] != '\r') continue;
+        inputBuffer[i] = '\0';
+    }
+
+    if (strcasecmp_P(inputBuffer, power_off_command_text) == 0) {
+        //TODO: handle power off
+        strcpy_P(outputBuffer, power_off_command_text);
+    } else if (strcasecmp_P(inputBuffer, no_power_off_command_text) == 0) {
+        //TODO: handle power on
+        strcpy_P(outputBuffer, no_power_off_command_text);
+    } else if (strcasecmp_P(inputBuffer, ping_command_text) == 0) {
+        status_update_s_count = STATUS_UPDATE_INTERVAL_IN_S;
+        return;
+    } else {
+        strcpy_P(outputBuffer, unknown_command_text);
+    }
+
+    strcpy_P(outputBuffer + strlen(outputBuffer), new_line);
+    Serial_WriteString(outputBuffer, strlen(outputBuffer));
+}
+
 // This timer is configured to pulse every 1ms
 ISR(TIMER0_OVF_vect) {
-    led_count++;
+    ms_count++;
+    if (ms_count > 999) {
+        ms_count = 0;
+        status_update_s_count++;
+    }
 
-    if (led_count > 200) {
-        if (led_on == 0) {
-            led_on = 1;
-        } else {
-            led_on = 0;
-        }
+    if (status_update_s_count >= STATUS_UPDATE_INTERVAL_IN_S) {
+        if (write_status()) status_update_s_count = 0;
+    }
 
-        PORTB ^= led_on;
-        if (!Serial_WritePending()) {
-            if (led_on > 0) {
-                strcpy_P(outputBuffer, on_text);
-            } else {
-                strcpy_P(outputBuffer, off_text);
-            }
-
-            strcpy_P((outputBuffer + strlen(outputBuffer)), new_line);
-            Serial_WriteString(outputBuffer, strlen(outputBuffer));
-        }
-        led_count = 0;
+    if (Serial_ReadPending() && !Serial_WritePending()) {
+        check_command();
     }
 
     TCNT0 = 192;
@@ -51,8 +105,9 @@ ISR(TIMER0_OVF_vect) {
 int main(void)
 {
     Serial_Init(38400);
-    led_on = 0;
-    led_count = 0;
+    Serial_SetReadBuffer(inputBuffer, 10);
+    ms_count = 0;
+    status_update_s_count = 0;
     DDRB = 1;
 
     TCNT0 = 192;
