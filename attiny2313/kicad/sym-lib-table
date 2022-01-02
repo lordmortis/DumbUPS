@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "MM232R")(type "KiCad")(uri "${KIPRJMOD}/library/MM232R.kicad_sym")(options "")(descr ""))
+)
