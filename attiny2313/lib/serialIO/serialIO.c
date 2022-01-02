@@ -5,6 +5,7 @@
 #include "serialIO.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <util/atomic.h>
 
 #define SET_BIT(val, bitIndex) val |= (1 << bitIndex)
 #define CLEAR_BIT(val, bitIndex) val &= ~(1 << bitIndex)
@@ -50,38 +51,40 @@ void Serial_SetReadBuffer(char *buffer, uint8_t length) {
 }
 
 void Serial_WriteString(char *data, uint8_t length) {
-    CLEAR_BIT(UCSRB, RXCIE);
-    SET_BIT(UCSRB, UDRIE);
-    SET_BIT(status, WRITE_PENDING);
-    writeBuffer = data;
-    writeBufferIndex = 0;
-    writeBufferLength = length;
-    if (!BIT_IS_SET(UCSRA, UDRE)) {
-        TXB = writeBuffer[writeBufferIndex];
-        writeBufferIndex++;
+    ATOMIC_BLOCK(ATOMIC_FORCEON) {
+        CLEAR_BIT(UCSRB, RXCIE);
+        writeBuffer = data;
+        writeBufferIndex = 0;
+        writeBufferLength = length;
+        SET_BIT(UCSRB, UDRIE);
+        SET_BIT(status, WRITE_PENDING);
     }
 }
 
 bool Serial_WritePending() {
-    return BIT_IS_SET(status, WRITE_PENDING);
+    ATOMIC_BLOCK(ATOMIC_FORCEON) {
+        return BIT_IS_SET(status, WRITE_PENDING);
+    }
 }
 
 bool Serial_ReadPending() {
-    return BIT_IS_SET(status, READ_PENDING);
+    ATOMIC_BLOCK(ATOMIC_FORCEON) {
+        return BIT_IS_SET(status, READ_PENDING);
+    }
 }
 
 void Serial_ResetReadBuffer() {
-    CLEAR_BIT(status, READ_PENDING);
-    readBufferIndex = 0;
+    ATOMIC_BLOCK(ATOMIC_FORCEON) {
+        CLEAR_BIT(status, READ_PENDING);
+        readBufferIndex = 0;
+    }
 }
 
 ISR(USART_UDRE_vect) {
     if (!BIT_IS_SET(status, WRITE_PENDING)) return;
     TXB = writeBuffer[writeBufferIndex];
     writeBufferIndex++;
-    if (writeBufferIndex < writeBufferLength) {
-        SET_BIT(status, WRITE_PENDING);
-    } else {
+    if (writeBufferIndex >= writeBufferLength) {
         CLEAR_BIT(status, WRITE_PENDING);
         SET_BIT(UCSRB, RXCIE);
         CLEAR_BIT(UCSRB, UDRE);
@@ -90,8 +93,8 @@ ISR(USART_UDRE_vect) {
 
 ISR(USART_RX_vect) {
     char temp = RXB;
-    if (readBufferIndex >= (readBufferLength - 1)) return;
     SET_BIT(status, READ_PENDING);
+    if (readBufferIndex >= (readBufferLength - 1)) return;
     readBuffer[readBufferIndex] = temp;
     readBufferIndex++;
     readBuffer[readBufferIndex] = '\0';
