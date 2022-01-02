@@ -140,24 +140,28 @@ ISR(TIMER0_OVF_vect) {
 
 bool updateInputs() {
     bool stateDirty = false;
-    uint8_t state = PORTB;
-    if (BIT_IS_SET(state, BATTERY_POWER_BIT) != batteryPower) {
-        batteryPower = BIT_IS_SET(state, BATTERY_POWER_BIT);
+    uint8_t state = PINB;
+    bool temp = BIT_IS_SET(state, BATTERY_POWER_BIT) > 0;
+    if (temp != batteryPower) {
+        batteryPower = temp;
         stateDirty = true;
     }
 
-    if (BIT_IS_SET(state, MAINS_DOWN_BIT) != mainsDown) {
-        mainsDown = BIT_IS_SET(state, MAINS_DOWN_BIT);
+    temp = BIT_IS_SET(state, MAINS_DOWN_BIT) > 0;
+    if (temp != mainsDown) {
+        mainsDown = temp;
         stateDirty = true;
     }
 
-    if (BIT_IS_SET(state, MAINS_UP_BIT) != mainsUp) {
-        mainsUp = BIT_IS_SET(state, MAINS_UP_BIT);
+    temp = BIT_IS_SET(state, MAINS_UP_BIT) > 0;
+    if (temp != mainsUp) {
+        mainsUp = temp;
         stateDirty = true;
     }
 
-    if (BIT_IS_SET(state, LOW_BATTERY_BIT) != lowBattery) {
-        mainsUp = BIT_IS_SET(state, LOW_BATTERY_BIT);
+    temp = BIT_IS_SET(state, LOW_BATTERY_BIT) > 0;
+    if (temp != lowBattery) {
+        lowBattery = temp;
         stateDirty = true;
     }
 
@@ -169,7 +173,6 @@ int main(void)
     Serial_Init(38400);
     Serial_SetReadBuffer(inputBuffer, 10);
     ms_count = 0;
-    status_update_s_count = 0;
     upsOn = true;
     DDRA = (1<<DDRA0) | (1<<DDRA1); // Output pins A0 and A1
     PORTA = 0;
@@ -180,6 +183,7 @@ int main(void)
 
     updateInputs();
     write_status();
+    status_update_s_count = 0;
 
     TCNT0 = 192;
     TCCR0A = 0x00;
@@ -192,7 +196,6 @@ int main(void)
     while(1)
     {
         if (sendStatusUpdate) {
-
             if (write_status()) {
                 status_update_s_count = 0;
                 sendStatusUpdate = false;
