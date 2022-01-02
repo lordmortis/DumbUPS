@@ -5,6 +5,13 @@
 
 #include "serialIO.h"
 
+// Power state is Port A 0 (Output)
+
+// Battery Power is Port B 0 (Input)
+// Mains Down is Port B 1 (Input)
+// Low Battery is Port B 2 (Input)
+// Mains up is Port B 3 (input)
+
 #define POWER_OFF_TIME_S = 30
 #define POWER_UP_DELAY_S = 30
 #define STATUS_CHANGE_UPDATE_WAIT_IN_MS 500
