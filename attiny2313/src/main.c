@@ -2,7 +2,6 @@
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
 #include <avr/cpufunc.h>
-#include <util/atomic.h>
 #include <string.h>
 
 #include "serialIO.h"
@@ -10,12 +9,17 @@
 #define SET_BIT(val, bitIndex) val |= (1 << bitIndex)
 #define CLEAR_BIT(val, bitIndex) val &= ~(1 << bitIndex)
 #define BIT_IS_SET(val, bitIndex) (val & (1 << bitIndex))
+#define TOGGLE_BIT(val, bitIndex) val ^= (1 << bitIndex)
 
-#define POWER_OFF_TIME_S = 30
-#define POWER_UP_DELAY_S = 30
-#define STATUS_CHANGE_UPDATE_WAIT_IN_MS 500
-#define STATUS_UPDATE_TIME_MAX_IN_S 30
-#define STATUS_UPDATE_INTERVAL_IN_S 5
+#define POWER_OFF_TIME_S 30
+#define POWER_ON_TIME_S 30
+#define STATUS_CHANGE_UPDATE_WAIT_IN_MS 100
+#define STATUS_UPDATE_INTERVAL_IN_S 30
+#define MAX_WATCHDOG_TIME_IN_S 30
+
+#define POWER_UP_FLASH_DELAY_MS 250
+#define POWER_DOWN_FLASH_DELAY_MS 125
+#define MAINS_DOWN_FLASH_DELAY_MS 50
 
 #define POWER_STATE_BIT PA0 // Power state is Port A 0 (Output)
 #define STATUS_LED_BIT PA1 // Status LED is Port A 1 (Output)
@@ -25,13 +29,15 @@
 #define LOW_BATTERY_BIT PB2 // Low Battery is Port B 2 (Input)
 #define MAINS_UP_BIT PB3 // Mains up is Port B 3 (input)
 
-char const status_text[] PROGMEM = "STATUS-";
+const char status_text[] PROGMEM = "STATUS-";
 char const battery_text[] PROGMEM = "BATT:";
 char const battery_low_text[] PROGMEM = ",BATTLOW:";
 char const mains_down_text[] PROGMEM = ",MAINSDWN:";
 char const mains_up_text[] PROGMEM = ",MAINSUP:";
 char const yes_text[] PROGMEM = "Yes";
 char const no_text[] PROGMEM = "No";
+const char power_up_status_text[] PROGMEM = "POWERING UP";
+const char watchdog_expired_text[] PROGMEM = "Watchdog Expired, shutting down";
 char const new_line[] PROGMEM = "\r\n";
 char const power_off_command_text[] PROGMEM = "shut";
 char const no_power_off_command_text[] PROGMEM = "noshut";
@@ -39,8 +45,13 @@ char const ping_command_text[] PROGMEM = "ping";
 char const ping_response_text[] PROGMEM = "PONG";
 char const unknown_command_text[] PROGMEM = "unknown command: ";
 
-uint16_t ms_count;
-uint8_t status_update_s_count;
+uint16_t countMS;
+uint16_t countPowerChangeFinalizeMS;
+uint8_t countStatusChangeDelayMS;
+uint8_t flashDelayMS;
+uint8_t countStatusUpdateS;
+uint8_t countStatusWatchdogS;
+uint8_t countPowerChangeS;
 
 bool sendStatusUpdate;
 bool checkInputs;
@@ -49,6 +60,9 @@ char outputBuffer[60];
 char inputBuffer[10];
 
 bool upsOn;
+bool poweringOff;
+bool poweringOn;
+
 bool batteryPower;
 bool mainsDown;
 bool mainsUp;
@@ -107,10 +121,11 @@ void check_command() {
     }
 
     if (strcasecmp_P(inputBuffer, power_off_command_text) == 0) {
-        //TODO: handle power off
+        poweringOff = true;
     } else if (strcasecmp_P(inputBuffer, no_power_off_command_text) == 0) {
-        //TODO: handle power on
+        poweringOff = false;
     } else if (strcasecmp_P(inputBuffer, ping_command_text) == 0) {
+        countStatusWatchdogS = 0;
         strcpy_P(outputBuffer, ping_response_text);
         strcpy_P(outputBuffer + strlen(outputBuffer), new_line);
         Serial_WriteString(outputBuffer, strlen(outputBuffer));
@@ -124,13 +139,53 @@ void check_command() {
 
 // This timer is configured to pulse every 1ms
 ISR(TIMER0_OVF_vect) {
-    ms_count++;
-    if (ms_count > 999) {
-        ms_count = 0;
-        status_update_s_count++;
+    countMS++;
+    if (poweringOn) {
+        flashDelayMS++;
+        if (flashDelayMS >= POWER_UP_FLASH_DELAY_MS) {
+            TOGGLE_BIT(PORTA, STATUS_LED_BIT);
+            flashDelayMS = 0;
+        }
+    } else if (poweringOff) {
+        flashDelayMS++;
+        if (flashDelayMS >= POWER_DOWN_FLASH_DELAY_MS) {
+            TOGGLE_BIT(PORTA, STATUS_LED_BIT);
+            flashDelayMS = 0;
+        }
+    } else if (mainsDown) {
+        flashDelayMS++;
+        if (flashDelayMS >= MAINS_DOWN_FLASH_DELAY_MS) {
+            TOGGLE_BIT(PORTA, STATUS_LED_BIT);
+            flashDelayMS = 0;
+        }
     }
 
-    if (status_update_s_count >= STATUS_UPDATE_INTERVAL_IN_S) {
+    //This is the power change low set timer system.
+    if (countPowerChangeFinalizeMS > 0) {
+        countPowerChangeFinalizeMS--;
+        if (countPowerChangeFinalizeMS == 0) {
+            PORTA = 0; // This clears the LED status _and_ drops the power state
+        }
+    }
+
+    if (countStatusChangeDelayMS > 0) {
+        countStatusChangeDelayMS--;
+        if (countStatusChangeDelayMS == 0) {
+            sendStatusUpdate = true;
+            countStatusChangeDelayMS = 0;
+        }
+    }
+
+    if (countMS > 999) {
+        countMS = 0;
+        countStatusUpdateS++;
+        countStatusWatchdogS++;
+
+        if (poweringOff || poweringOn) countPowerChangeS++;
+    }
+
+    if (countStatusUpdateS >= STATUS_UPDATE_INTERVAL_IN_S) {
+        countStatusChangeDelayMS = 0;
         sendStatusUpdate = true;
     }
 
@@ -147,19 +202,20 @@ bool updateInputs() {
         stateDirty = true;
     }
 
-    temp = BIT_IS_SET(state, MAINS_DOWN_BIT) > 0;
+    //These are inverted due to the open collector design.
+    temp = BIT_IS_SET(state, MAINS_DOWN_BIT) == 0;
     if (temp != mainsDown) {
         mainsDown = temp;
         stateDirty = true;
     }
 
-    temp = BIT_IS_SET(state, MAINS_UP_BIT) > 0;
+    temp = BIT_IS_SET(state, MAINS_UP_BIT) == 0;
     if (temp != mainsUp) {
         mainsUp = temp;
         stateDirty = true;
     }
 
-    temp = BIT_IS_SET(state, LOW_BATTERY_BIT) > 0;
+    temp = BIT_IS_SET(state, LOW_BATTERY_BIT) == 0;
     if (temp != lowBattery) {
         lowBattery = temp;
         stateDirty = true;
@@ -172,8 +228,9 @@ int main(void)
 {
     Serial_Init(38400);
     Serial_SetReadBuffer(inputBuffer, 10);
-    ms_count = 0;
+    countMS = 0;
     upsOn = true;
+    poweringOff = false;
     DDRA = (1<<DDRA0) | (1<<DDRA1); // Output pins A0 and A1
     PORTA = 0;
     DDRB = 0; // Input pins on B0-3, may as well set them all to input
@@ -183,7 +240,8 @@ int main(void)
 
     updateInputs();
     write_status();
-    status_update_s_count = 0;
+    countStatusUpdateS = 0;
+    countStatusWatchdogS = 0;
 
     TCNT0 = 192;
     TCCR0A = 0x00;
@@ -197,7 +255,7 @@ int main(void)
     {
         if (sendStatusUpdate) {
             if (write_status()) {
-                status_update_s_count = 0;
+                countStatusUpdateS = 0;
                 sendStatusUpdate = false;
             }
             continue;
@@ -210,15 +268,57 @@ int main(void)
                 continue;
             }
 
-            if (updateInputs()) {
-                sendStatusUpdate = true;
-                checkInputs = false;
-                continue;
-            }
+            if (updateInputs()) countStatusChangeDelayMS = STATUS_CHANGE_UPDATE_WAIT_IN_MS;
 
             checkInputs = false;
         }
 
+        if (countStatusWatchdogS > MAX_WATCHDOG_TIME_IN_S) {
+            strcpy_P(outputBuffer, watchdog_expired_text);
+            strcpy_P(outputBuffer + strlen(outputBuffer), new_line);
+            Serial_WriteString(outputBuffer, strlen(outputBuffer));
+            poweringOff = true;
+            countPowerChangeS = 0;
+            countStatusWatchdogS = 0;
+            continue;
+        }
+
+        if (poweringOff) {
+            if (mainsUp) {
+                poweringOff = false;
+                CLEAR_BIT(PORTA, STATUS_LED_BIT);
+                continue;
+            }
+
+            if (countPowerChangeS > POWER_OFF_TIME_S) {
+                //We need to go high and then low after 500 MS. Here we set it high,
+                //and then start a counter for the ISR timer routine to set low
+                SET_BIT(PORTA, POWER_STATE_BIT);
+                countPowerChangeFinalizeMS = 500;
+                poweringOff = false;
+                upsOn = false;
+            }
+        }
+
+        if (!upsOn && mainsUp) {
+            if (!poweringOn) {
+                poweringOn = true;
+                countPowerChangeS = 0;
+            } else if (countPowerChangeS >= POWER_ON_TIME_S) {
+                if (mainsUp && !upsOn) {
+                    strcpy_P(outputBuffer, power_up_status_text);
+                    strcpy_P(outputBuffer + strlen(outputBuffer), new_line);
+                    Serial_WriteString(outputBuffer, strlen(outputBuffer));
+                    //We need to go high and then low after 500 MS. Here we set it high,
+                    //and then start a counter for the ISR timer routine to set low
+                    SET_BIT(PORTA, POWER_STATE_BIT);
+                    poweringOff = false;
+                    poweringOn = false;
+                    upsOn = true;
+                    countPowerChangeFinalizeMS = 500;
+                }
+            }
+        }
     }
 #pragma clang diagnostic pop
 

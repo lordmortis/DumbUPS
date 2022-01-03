@@ -9,7 +9,6 @@
 
 #define SET_BIT(val, bitIndex) val |= (1 << bitIndex)
 #define CLEAR_BIT(val, bitIndex) val &= ~(1 << bitIndex)
-#define TOGGLE_BIT(val, bitIndex) val ^= (1 << bitIndex)
 #define BIT_IS_SET(val, bitIndex) (val & (1 << bitIndex))
 
 //STATUS BITS
