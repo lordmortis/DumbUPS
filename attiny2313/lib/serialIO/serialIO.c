@@ -22,6 +22,7 @@ uint8_t writeBufferLength;
 char *readBuffer;
 uint8_t readBufferIndex;
 uint8_t readBufferLength;
+bool autoResetReadBufferIfFull;
 
 uint8_t status;
 
@@ -44,9 +45,10 @@ void Serial_Init(uint32_t baudRate) {
     UCSRC= (1<<UCSZ1) | (1<<UCSZ0);   // 8-bit
 }
 
-void Serial_SetReadBuffer(char *buffer, uint8_t length) {
+void Serial_SetReadBuffer(char *buffer, uint8_t length, bool autoResetBuffer) {
     readBuffer = buffer;
     readBufferLength = length;
+    autoResetReadBufferIfFull = autoResetBuffer;
 }
 
 void Serial_WriteString(char *data, uint8_t length) {
@@ -93,7 +95,13 @@ ISR(USART_UDRE_vect) {
 ISR(USART_RX_vect) {
     char temp = RXB;
     SET_BIT(status, READ_PENDING);
-    if (readBufferIndex >= (readBufferLength - 1)) return;
+    if (readBufferIndex >= (readBufferLength - 1)) {
+        if (autoResetReadBufferIfFull) {
+            readBufferIndex = 0;
+        } else {
+            return;
+        }
+    }
     readBuffer[readBufferIndex] = temp;
     readBufferIndex++;
     readBuffer[readBufferIndex] = '\0';

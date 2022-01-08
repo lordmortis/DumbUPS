@@ -140,24 +140,8 @@ void check_command() {
 // This timer is configured to pulse every 1ms
 ISR(TIMER0_OVF_vect) {
     countMS++;
-    if (poweringOn) {
+    if (poweringOn || poweringOff || mainsDown) {
         flashDelayMS++;
-        if (flashDelayMS >= POWER_UP_FLASH_DELAY_MS) {
-            TOGGLE_BIT(PORTA, STATUS_LED_BIT);
-            flashDelayMS = 0;
-        }
-    } else if (poweringOff) {
-        flashDelayMS++;
-        if (flashDelayMS >= POWER_DOWN_FLASH_DELAY_MS) {
-            TOGGLE_BIT(PORTA, STATUS_LED_BIT);
-            flashDelayMS = 0;
-        }
-    } else if (mainsDown) {
-        flashDelayMS++;
-        if (flashDelayMS >= MAINS_DOWN_FLASH_DELAY_MS) {
-            TOGGLE_BIT(PORTA, STATUS_LED_BIT);
-            flashDelayMS = 0;
-        }
     }
 
     //This is the power change low set timer system.
@@ -227,7 +211,7 @@ bool updateInputs() {
 int main(void)
 {
     Serial_Init(38400);
-    Serial_SetReadBuffer(inputBuffer, 10);
+    Serial_SetReadBuffer(inputBuffer, 10, true);
     countMS = 0;
     upsOn = true;
     poweringOff = false;
@@ -290,13 +274,20 @@ int main(void)
                 continue;
             }
 
+            if (flashDelayMS >= POWER_DOWN_FLASH_DELAY_MS) {
+                TOGGLE_BIT(PORTA, STATUS_LED_BIT);
+                flashDelayMS = 0;
+            }
+
             if (countPowerChangeS > POWER_OFF_TIME_S) {
                 //We need to go high and then low after 500 MS. Here we set it high,
                 //and then start a counter for the ISR timer routine to set low
                 SET_BIT(PORTA, POWER_STATE_BIT);
                 countPowerChangeFinalizeMS = 500;
+                countPowerChangeS = 0;
                 poweringOff = false;
                 upsOn = false;
+                continue;
             }
         }
 
@@ -304,19 +295,31 @@ int main(void)
             if (!poweringOn) {
                 poweringOn = true;
                 countPowerChangeS = 0;
-            } else if (countPowerChangeS >= POWER_ON_TIME_S) {
-                if (mainsUp && !upsOn) {
-                    strcpy_P(outputBuffer, power_up_status_text);
-                    strcpy_P(outputBuffer + strlen(outputBuffer), new_line);
-                    Serial_WriteString(outputBuffer, strlen(outputBuffer));
-                    //We need to go high and then low after 500 MS. Here we set it high,
-                    //and then start a counter for the ISR timer routine to set low
-                    SET_BIT(PORTA, POWER_STATE_BIT);
-                    poweringOff = false;
-                    poweringOn = false;
-                    upsOn = true;
-                    countPowerChangeFinalizeMS = 500;
+            } else {
+                if (flashDelayMS >= POWER_UP_FLASH_DELAY_MS) {
+                    TOGGLE_BIT(PORTA, STATUS_LED_BIT);
+                    flashDelayMS = 0;
                 }
+                if (countPowerChangeS >= POWER_ON_TIME_S) {
+                    if (mainsUp && !upsOn) {
+                        strcpy_P(outputBuffer, power_up_status_text);
+                        strcpy_P(outputBuffer + strlen(outputBuffer), new_line);
+                        Serial_WriteString(outputBuffer, strlen(outputBuffer));
+                        //We need to go high and then low after 500 MS. Here we set it high,
+                        //and then start a counter for the ISR timer routine to set low
+                        SET_BIT(PORTA, POWER_STATE_BIT);
+                        poweringOff = false;
+                        poweringOn = false;
+                        upsOn = true;
+                        countPowerChangeFinalizeMS = 500;
+                    }
+                }
+                continue;
+            }
+
+            if (mainsDown && flashDelayMS >= MAINS_DOWN_FLASH_DELAY_MS) {
+                TOGGLE_BIT(PORTA, STATUS_LED_BIT);
+                flashDelayMS = 0;
             }
         }
     }
