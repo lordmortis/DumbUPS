@@ -253,7 +253,6 @@ int main(void)
             }
 
             if (updateInputs()) countStatusChangeDelayMS = STATUS_CHANGE_UPDATE_WAIT_IN_MS;
-
             checkInputs = false;
         }
 
@@ -289,6 +288,7 @@ int main(void)
                 upsOn = false;
                 continue;
             }
+            continue;
         }
 
         if (!upsOn && mainsUp) {
@@ -316,11 +316,16 @@ int main(void)
                 }
                 continue;
             }
+        }
 
-            if (mainsDown && flashDelayMS >= MAINS_DOWN_FLASH_DELAY_MS) {
-                TOGGLE_BIT(PORTA, STATUS_LED_BIT);
-                flashDelayMS = 0;
-            }
+        if (mainsDown && flashDelayMS >= MAINS_DOWN_FLASH_DELAY_MS) {
+            TOGGLE_BIT(PORTA, STATUS_LED_BIT);
+            flashDelayMS = 0;
+            continue;
+        }
+
+        if (!poweringOff && !poweringOn && !mainsDown) {
+            CLEAR_BIT(PORTA, STATUS_LED_BIT);
         }
     }
 #pragma clang diagnostic pop
